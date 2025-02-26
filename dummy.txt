@@ -1,0 +1,54 @@
+CREATE TABLE customer (
+	customer_id int primary key  GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1),
+    name VARCHAR(100) NOT NULL,
+    phoneNumber  varchar (10) not null,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Admin (
+	admin_id int primary key  GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1),
+    name VARCHAR(100) NOT NULL,
+    phoneNumber  varchar(10) not null,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Product (
+    product_id INT PRIMARY KEY,  -- Integer, primary key (unique identifier)
+    name VARCHAR(255) NOT NULL, -- String, can't be null
+    price DECIMAL(10, 2) NOT NULL, -- Decimal, 10 digits total, 2 decimal places.  Suitable for monetary values.
+    quantity INT NOT NULL CHECK (quantity >= 0) -- Integer, can't be null, and must be non-negative.
+);
+
+CREATE TABLE Cart (
+		cart_id int primary key  GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1),
+		customer_id int,
+		foreign key(customer_id) references customer(customer_id)
+);
+
+CREATE TABLE  Cart_items(
+			cart_item_id int  primary key  GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1),
+			cart_id int,
+			foreign key (cart_id) references  Cart(cart_id),
+			product_id int , foreign key (product_id) references Product(product_id),
+			quantity int not null default 1,
+			price_per_unit int not null
+);
+
+CREATE  TABLE Orders(
+			order_id int primary key  GENERATED ALWAYS AS IDENTITY(Start with 1, Increment by 1),
+			customer_id int,
+			foreign key(customer_id) references customer(customer_id),
+			cart_id int,
+			foreign key(cart_id) references customer(cart_id),
+			total_amount decimal(10,2) not null,
+			order_time timestamp default current_timestamp
+);
+
+
+
+
+
+
+ 
